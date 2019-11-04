@@ -1,0 +1,18 @@
+<template>
+    <!-- card -->
+        <div>
+            <template for:each={accounts} for:item="account">
+                <my-account-tile
+                    key={account.Id}
+                    account={account}
+                ></my-account-tile>
+            </template>
+        </div>
+
+        <!-- <recipe-view-source source="recipe/compositionIteration" slot="footer">
+            Loop through an array of items in a template, and nest an instance
+            of a child component for each item in the array.
+        </recipe-view-source> -->
+
+    <!-- /card -->
+</template>

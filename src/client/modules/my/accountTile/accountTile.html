@@ -1,0 +1,11 @@
+<template>
+    <template if:true={account}>
+        <img src={account.Picture} alt="Profile photo" />
+        <p>{account.name}</p>
+        <p>{account.industry}</p>
+        
+    </template>
+    <template if:false={account}
+        ><p>No contact data available.</p></template
+    >
+</template>
