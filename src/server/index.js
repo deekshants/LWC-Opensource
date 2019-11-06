@@ -2,6 +2,7 @@
 const { Client } = require('pg');
 require('dotenv').config();
 module.exports = app => {
+
     // put your express app logic here
     app.get('/accounts', (req, res) => {
         var accounts = [];
@@ -9,9 +10,7 @@ module.exports = app => {
             connectionString: process.env.DATABASE_URL,
             ssl: true
         });
-
         client.connect();
-
         client.query(
             'SELECT sfid, name, photourl, phone, website, industry FROM salesforce.Account;',
             (err, data) => {
@@ -21,15 +20,46 @@ module.exports = app => {
                         id: accRecord.sfid,
                         name: accRecord.name,
                         phone: accRecord.phone,
-                        website: accRecord.website,
+                        website: (String(accRecord.website).substring(0, 4) !== 'http') ? ((accRecord.website != null)
+                            ? 'http://' + accRecord.website : '') : accRecord.website,
                         industry: accRecord.industry,
                         photourl: accRecord.photourl
                     };
                 });
-                console.log(JSON.stringify(accounts));
                 res.json(accounts);
                 client.end();
             }
         );
     });
+
+    app.get('/getaccountforedit/:id', (req, res) => {
+        const client = new Client({
+            connectionString: process.env.DATABASE_URL,
+            ssl: true
+        });
+        client.connect();
+        client.query(
+            'SELECT sfid, name, photourl, phone, website, industry FROM salesforce.Account WHERE sfid = \'' + req.params.id + '\' LIMIT 1;',
+            (err, data) => {
+                if (err) console.log(err);
+                res.json(data.rows[0]);
+            }
+        )
+        
+    });
+
+    app.get('/deleteaccount/:id', (req, res) => {
+        const client = new Client({
+            connectionString: process.env.DATABASE_URL,
+            ssl: true
+        });
+        client.connect();
+        client.query(
+            'DELETE FROM salesforce.Account WHERE sfid = \''+req.params.id+'\' ;',
+            (err, data) => {
+                if (err) console.log(err);
+                res.json(data);
+            }
+        )
+    })
 };

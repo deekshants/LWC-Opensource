@@ -1,0 +1,51 @@
+<template>
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered  ">
+        <thead>
+            <tr class="slds-line-height_reset">
+                <th style="display: none;">Id</th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Account Name">Account Name</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Phone">Phone</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Website">Website</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Industry">Industry</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Actions">Actions</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <template for:each={accounts} for:item="account">
+                <tr class="slds-hint-parent" key={account.id}>
+                    <td style="display: none;">{account.id}</td>
+                    <td data-label="Account Name">
+                        <div class="slds-truncate" title={account.name}>{account.name}</div>
+                    </td>
+                    <td data-label="Phone">
+                        <div class="slds-truncate" title={account.phone}>{account.phone}</div>
+                    </td>
+                    <td data-label="Website">
+                        <div class="slds-truncate" title={account.website}>
+                            <a href={account.website}>{account.website}</a>
+                        </div>
+                    </td>
+                    <td data-label="Industry">
+                        <div class="slds-truncate" title={account.industry}>{account.industry}</div>
+                    </td>
+                    <td data-label="Actions">
+                        <div class="slds-button-group" role="group">
+                            <button class="slds-button slds-button_neutral" onclick={handleEditClick}>Edit</button>
+                            <button class="slds-button slds-button_neutral" onclick={handleDelete}>Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            </template>
+        </tbody>
+    </table>
+</template>
