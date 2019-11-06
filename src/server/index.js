@@ -21,7 +21,8 @@ module.exports = app => {
                         phone: accRecord.phone,
                         website:
                             String(accRecord.website).substring(0, 4) !== 'http'
-                                ? accRecord.website != null && accRecord.website !== ''
+                                ? accRecord.website != null &&
+                                  accRecord.website !== ''
                                     ? 'http://' + accRecord.website
                                     : ''
                                 : accRecord.website,
@@ -43,8 +44,8 @@ module.exports = app => {
         client.connect();
         client.query(
             "SELECT sfid, name, photourl, phone, website, industry FROM salesforce.Account WHERE sfid = '" +
-            req.params.id +
-            "' LIMIT 1;",
+                req.params.id +
+                "' LIMIT 1;",
             (err, data) => {
                 if (err) console.log(err);
                 res.json(data.rows[0]);
@@ -60,8 +61,8 @@ module.exports = app => {
         client.connect();
         client.query(
             "DELETE FROM salesforce.Account WHERE sfid = '" +
-            req.params.id +
-            "' ;",
+                req.params.id +
+                "' ;",
             (err, data) => {
                 if (err) console.log(err);
                 res.json(data);
@@ -76,19 +77,24 @@ module.exports = app => {
             ssl: true
         });
         client.connect();
-        if (req.body.sfid != null && req.body.sfid !== '' && req.body.sfid !== undefined) {
+        if (
+            req.body.sfid != null &&
+            req.body.sfid !== '' &&
+            req.body.sfid !== undefined
+        ) {
             query = `UPDATE salesforce.Account SET name = '${req.body.name}', website = '${req.body.website}',
-                     phone = '${req.body.phone}', industry = '${req.body.industry}' WHERE sfid = '${req.body.sfid}'`
-        }
-        else{
+                     phone = '${req.body.phone}', industry = '${req.body.industry}' WHERE sfid = '${req.body.sfid}'`;
+        } else {
             query = `INSERT INTO salesforce.Account(sfid, name, website, phone, industry) VALUES
-                    ('${Math.random() * Math.pow(10, 17)}', '${req.body.name}', '${req.body.website}', '${req.body.phone}', '${req.body.industry}');`
+                    ('${Math.random() * Math.pow(10, 17)}', '${
+                req.body.name
+            }', '${req.body.website}', '${req.body.phone}', '${
+                req.body.industry
+            }');`;
         }
-        client.query(query,
-            (err, data) => {
-                if (err) console.log(err);
-                res.redirect('/');
-            }
-        );
-    })
+        client.query(query, (err, data) => {
+            if (err) console.log(err);
+            res.redirect('/');
+        });
+    });
 };

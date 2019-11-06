@@ -42,10 +42,12 @@ export default class DataTable extends LightningElementSLDS {
                     if (!response.ok) this.error = response;
                     else {
                         console.log(response.json());
-                        let b = this.accounts.findIndex((acc) => {
+                        let b = this.accounts.findIndex(acc => {
                             // eslint-disable-next-line @lwc/lwc/no-inner-html
-                            return acc.sfid === event.path[3].firstChild.innerHTML;
-                        })
+                            return (
+                                acc.sfid === event.path[3].firstChild.innerHTML
+                            );
+                        });
                         this.accounts.splice(b, 1);
                     }
                 })
