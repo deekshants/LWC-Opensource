@@ -1,13 +1,16 @@
 /* eslint-disable no-alert */
 import LightningElementSLDS from '../../../utils/LightningElementSLDS';
-import { track, api } from 'lwc';
+import { track } from 'lwc';
 
 export default class DataTable extends LightningElementSLDS {
     @track accounts = [];
-    @api accountRecord;
     error;
     constructor() {
         super();
+        this.fetchAccounts();
+    }
+
+    fetchAccounts() {
         fetch('/accounts')
             .then(response => {
                 if (!response.ok) {
@@ -22,7 +25,6 @@ export default class DataTable extends LightningElementSLDS {
                 this.error = err;
             });
     }
-
     handleEditClick(event) {
         const selectEvent = new CustomEvent('editaccount', {
             // eslint-disable-next-line @lwc/lwc/no-inner-html
@@ -38,8 +40,14 @@ export default class DataTable extends LightningElementSLDS {
             fetch('/deleteaccount/' + event.path[3].firstChild.innerHTML)
                 .then(response => {
                     if (!response.ok) this.error = response;
-                    console.log(response.json());
-                    this.accountRecord = null;
+                    else {
+                        console.log(response.json());
+                        let b = this.accounts.findIndex((acc) => {
+                            // eslint-disable-next-line @lwc/lwc/no-inner-html
+                            return acc.sfid === event.path[3].firstChild.innerHTML;
+                        })
+                        this.accounts.splice(b, 1);
+                    }
                 })
                 .catch(err => {
                     this.error = err;

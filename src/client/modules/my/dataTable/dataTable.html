@@ -24,8 +24,8 @@
         </thead>
         <tbody>
             <template for:each={accounts} for:item="account">
-                <tr class="slds-hint-parent" key={account.id}>
-                    <td style="display: none;">{account.id}</td>
+                <tr class="slds-hint-parent" key={account.sfid}>
+                    <td style="display: none;">{account.sfid}</td>
                     <td data-label="Account Name">
                         <div class="slds-truncate" title={account.name}>
                             {account.name}
