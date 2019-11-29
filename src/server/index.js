@@ -22,7 +22,7 @@ module.exports = app => {
                         website:
                             String(accRecord.website).substring(0, 4) !== 'http'
                                 ? accRecord.website != null &&
-                                  accRecord.website !== ''
+                                    accRecord.website !== ''
                                     ? 'http://' + accRecord.website
                                     : ''
                                 : accRecord.website,
@@ -44,15 +44,27 @@ module.exports = app => {
         client.connect();
         client.query(
             "SELECT sfid, name, photourl, phone, website, industry FROM salesforce.Account WHERE sfid = '" +
-                req.params.id +
-                "' LIMIT 1;",
+            req.params.id +
+            "' LIMIT 1;",
             (err, data) => {
                 if (err) console.log(err);
                 res.json(data.rows[0]);
             }
         );
     });
-
+    app.get('/chartValueJson', (req, res) => {
+        res.json({
+            "width": 400,
+            "color": "blue",
+            "percent": 43,
+            "centerLabel": "Available",
+            "centerValue": 4,
+            "donutWidth": 50,
+            "valueSize": 60,
+            "labelSize": 40,
+            "labelYPos": 50
+        });
+    })
     app.get('/deleteaccount/:id', (req, res) => {
         const client = new Client({
             connectionString: process.env.DATABASE_URL,
@@ -61,8 +73,8 @@ module.exports = app => {
         client.connect();
         client.query(
             "DELETE FROM salesforce.Account WHERE sfid = '" +
-                req.params.id +
-                "' ;",
+            req.params.id +
+            "' ;",
             (err, data) => {
                 if (err) console.log(err);
                 res.json(data);
@@ -88,9 +100,9 @@ module.exports = app => {
             query = `INSERT INTO salesforce.Account(sfid, name, website, phone, industry) VALUES
                     ('${Math.random() * Math.pow(10, 17)}', '${
                 req.body.name
-            }', '${req.body.website}', '${req.body.phone}', '${
+                }', '${req.body.website}', '${req.body.phone}', '${
                 req.body.industry
-            }');`;
+                }');`;
         }
         client.query(query, (err, data) => {
             if (err) console.log(err);
